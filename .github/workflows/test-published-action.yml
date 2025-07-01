@@ -1,0 +1,29 @@
+name: Test Published Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-published:
+    runs-on: ubuntu-latest
+    name: Test Published Action
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Published Version System Action
+      id: version
+      uses: sanjeevkumarraob/version-system@v1
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+    
+    - name: Display Results
+      run: |
+        echo "🏷️ Current Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Version: ${{ steps.version.outputs.version }}"
+        echo "✅ Published action works correctly!"
