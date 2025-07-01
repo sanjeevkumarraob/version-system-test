@@ -31,15 +31,15 @@ jobs:
     
     - name: Display API Results
       run: |
-        echo "🏷️ Current API Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next API Version: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current API Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next API Version: ${{ steps.version.outputs.version }}"
     
     - name: Validate API Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^api-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "✅ API module version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^api-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ API module version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid API module version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid API module version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi
 
@@ -66,15 +66,15 @@ jobs:
     
     - name: Display Frontend Results
       run: |
-        echo "🏷️ Current Frontend Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next Frontend Version: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current Frontend Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Frontend Version: ${{ steps.version.outputs.version }}"
     
     - name: Validate Frontend Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^frontend-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "✅ Frontend module version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^frontend-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Frontend module version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid frontend module version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid frontend module version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi
 
@@ -101,14 +101,14 @@ jobs:
     
     - name: Display Backend Results
       run: |
-        echo "🏷️ Current Backend Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next Backend Version: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current Backend Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Backend Version: ${{ steps.version.outputs.version }}"
     
     - name: Validate Backend Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^backend-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "✅ Backend module version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^backend-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Backend module version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid backend module version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid backend module version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi

@@ -31,15 +31,15 @@ jobs:
     
     - name: Display Alpha Results
       run: |
-        echo "🏷️ Current Alpha Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next Alpha Version: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current Alpha Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Alpha Version: ${{ steps.version.outputs.version }}"
     
     - name: Validate Alpha Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-alpha$ ]]; then
-          echo "✅ Alpha suffix version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-alpha$ ]]; then
+          echo "✅ Alpha suffix version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid alpha suffix version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid alpha suffix version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi
 
@@ -66,14 +66,14 @@ jobs:
     
     - name: Display Beta Results
       run: |
-        echo "🏷️ Current Beta Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next Beta Version: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current Beta Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Beta Version: ${{ steps.version.outputs.version }}"
     
     - name: Validate Beta Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-beta$ ]]; then
-          echo "✅ Beta suffix version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-beta$ ]]; then
+          echo "✅ Beta suffix version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid beta suffix version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid beta suffix version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi

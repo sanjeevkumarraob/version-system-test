@@ -30,16 +30,16 @@ jobs:
     
     - name: Display Release Results
       run: |
-        echo "🏷️ Current Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next Version: ${{ steps.version.outputs.next_tag }}"
-        echo "📦 Release Created: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Version: ${{ steps.version.outputs.version }}"
+        echo "📦 Release Created: ${{ steps.version.outputs.version }}"
     
     - name: Validate Release Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "✅ Release version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Release version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid release version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid release version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi
     
@@ -48,8 +48,8 @@ jobs:
         # Wait a moment for the release to be created
         sleep 5
         # Check if the release exists
-        if gh release view "${{ steps.version.outputs.next_tag }}" > /dev/null 2>&1; then
-          echo "✅ GitHub release successfully created: ${{ steps.version.outputs.next_tag }}"
+        if gh release view "${{ steps.version.outputs.version }}" > /dev/null 2>&1; then
+          echo "✅ GitHub release successfully created: ${{ steps.version.outputs.version }}"
         else
           echo "❌ Error: GitHub release was not created"
           exit 1

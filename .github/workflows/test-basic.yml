@@ -30,14 +30,14 @@ jobs:
     
     - name: Display Results
       run: |
-        echo "🏷️ Current Version: ${{ steps.version.outputs.current_tag }}"
-        echo "🚀 Next Version: ${{ steps.version.outputs.next_tag }}"
+        echo "🏷️ Current Version: ${{ steps.version.outputs.current_version }}"
+        echo "🚀 Next Version: ${{ steps.version.outputs.version }}"
     
     - name: Validate Output
       run: |
-        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "✅ Basic version format is valid: ${{ steps.version.outputs.next_tag }}"
+        if [[ "${{ steps.version.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Basic version format is valid: ${{ steps.version.outputs.version }}"
         else
-          echo "❌ Error: Invalid basic version format: ${{ steps.version.outputs.next_tag }}"
+          echo "❌ Error: Invalid basic version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi
