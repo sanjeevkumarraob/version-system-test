@@ -21,7 +21,7 @@ jobs:
     
     - name: Test API Module Version
       id: version
-      uses: sanjeevkumarraob/version-system@main
+      uses: sanjeevkumarraob/version-system@v1
       with:
         VERSION_FILE: "modules/api/version.txt"
         GIT_REPO_PATH: "."
@@ -56,7 +56,7 @@ jobs:
     
     - name: Test Frontend Module Version
       id: version
-      uses: sanjeevkumarraob/version-system@main
+      uses: sanjeevkumarraob/version-system@v1
       with:
         VERSION_FILE: "modules/frontend/version.txt"
         GIT_REPO_PATH: "."
@@ -91,7 +91,7 @@ jobs:
     
     - name: Test Backend Module Version
       id: version
-      uses: sanjeevkumarraob/version-system@main
+      uses: sanjeevkumarraob/version-system@v1
       with:
         VERSION_FILE: "modules/backend/version.txt"
         GIT_REPO_PATH: "."
