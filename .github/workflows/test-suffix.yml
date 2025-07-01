@@ -1,0 +1,79 @@
+name: Test Suffix Versioning
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-alpha-suffix:
+    runs-on: ubuntu-latest
+    name: Test Alpha Suffix Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Alpha Suffix Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+        SUFFIX: "-alpha"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Alpha Results
+      run: |
+        echo "🏷️ Current Alpha Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Alpha Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Alpha Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-alpha$ ]]; then
+          echo "✅ Alpha suffix version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid alpha suffix version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi
+
+  test-beta-suffix:
+    runs-on: ubuntu-latest
+    name: Test Beta Suffix Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Beta Suffix Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+        SUFFIX: "-beta"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Beta Results
+      run: |
+        echo "🏷️ Current Beta Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Beta Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Beta Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-beta$ ]]; then
+          echo "✅ Beta suffix version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid beta suffix version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi

@@ -1,0 +1,43 @@
+name: Test Basic Versioning
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-basic-version:
+    runs-on: ubuntu-latest
+    name: Test Basic Version Generation
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Basic Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Results
+      run: |
+        echo "🏷️ Current Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Basic version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid basic version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi

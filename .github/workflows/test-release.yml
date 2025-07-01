@@ -1,0 +1,58 @@
+name: Test Release Creation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-release-creation:
+    runs-on: ubuntu-latest
+    name: Test Release Creation
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Release Creation
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+        CREATE_RELEASE: true
+        IS_SNAPSHOT: false
+    
+    - name: Display Release Results
+      run: |
+        echo "🏷️ Current Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Version: ${{ steps.version.outputs.next_tag }}"
+        echo "📦 Release Created: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Release Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Release version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid release version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi
+    
+    - name: Verify Release Created
+      run: |
+        # Wait a moment for the release to be created
+        sleep 5
+        # Check if the release exists
+        if gh release view "${{ steps.version.outputs.next_tag }}" > /dev/null 2>&1; then
+          echo "✅ GitHub release successfully created: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: GitHub release was not created"
+          exit 1
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

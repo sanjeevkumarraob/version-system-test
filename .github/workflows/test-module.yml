@@ -1,0 +1,114 @@
+name: Test Module Versioning
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-api-module:
+    runs-on: ubuntu-latest
+    name: Test API Module Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test API Module Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "modules/api/version.txt"
+        GIT_REPO_PATH: "."
+        MODULE: "api"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display API Results
+      run: |
+        echo "🏷️ Current API Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next API Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate API Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^api-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ API module version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid API module version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi
+
+  test-frontend-module:
+    runs-on: ubuntu-latest
+    name: Test Frontend Module Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Frontend Module Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "modules/frontend/version.txt"
+        GIT_REPO_PATH: "."
+        MODULE: "frontend"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Frontend Results
+      run: |
+        echo "🏷️ Current Frontend Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Frontend Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Frontend Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^frontend-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Frontend module version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid frontend module version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi
+
+  test-backend-module:
+    runs-on: ubuntu-latest
+    name: Test Backend Module Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Backend Module Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "modules/backend/version.txt"
+        GIT_REPO_PATH: "."
+        MODULE: "backend"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Backend Results
+      run: |
+        echo "🏷️ Current Backend Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Backend Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Backend Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^backend-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Backend module version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid backend module version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi

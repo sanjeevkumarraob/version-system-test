@@ -1,0 +1,79 @@
+name: Test Prefix Versioning
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-dev-prefix:
+    runs-on: ubuntu-latest
+    name: Test Dev Prefix Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Dev Prefix Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+        PREFIX: "dev-"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Dev Results
+      run: |
+        echo "🏷️ Current Dev Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Dev Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Dev Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^dev-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Dev prefix version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid dev prefix version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi
+
+  test-staging-prefix:
+    runs-on: ubuntu-latest
+    name: Test Staging Prefix Version
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        clean: true
+    
+    - name: Test Staging Prefix Version
+      id: version
+      uses: sanjeevkumarraob/version-system@main
+      with:
+        VERSION_FILE: "version.txt"
+        GIT_REPO_PATH: "."
+        PREFIX: "staging-"
+        CREATE_RELEASE: false
+        IS_SNAPSHOT: false
+    
+    - name: Display Staging Results
+      run: |
+        echo "🏷️ Current Staging Version: ${{ steps.version.outputs.current_tag }}"
+        echo "🚀 Next Staging Version: ${{ steps.version.outputs.next_tag }}"
+    
+    - name: Validate Staging Output
+      run: |
+        if [[ "${{ steps.version.outputs.next_tag }}" =~ ^staging-[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "✅ Staging prefix version format is valid: ${{ steps.version.outputs.next_tag }}"
+        else
+          echo "❌ Error: Invalid staging prefix version format: ${{ steps.version.outputs.next_tag }}"
+          exit 1
+        fi
